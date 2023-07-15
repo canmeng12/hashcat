@@ -1,6 +1,5 @@
 name: Build
 
-
 env:
   include_paths: |
     charsets/
@@ -42,44 +41,6 @@ on:
       - '.github/workflows/build.yml'
 
 jobs:
-  build-linux:
-    strategy:
-      fail-fast: false
-      matrix:
-        shared: [0, 1]
-    name: Build Linux (${{ matrix.shared == 0 && 'Static' || 'Shared' }})
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        env:
-          SHARED: ${{ matrix.shared }}
-        run: make
-      - name: Generate artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: hashcat-linux-${{ matrix.shared == 0 && 'static' || 'shared' }}
-          path: ${{ env.include_paths }}
-
-  build-macos:
-    strategy:
-      fail-fast: false
-      matrix:
-        shared: [0, 1]
-    name: Build macOS (${{ matrix.shared == 0 && 'Static' || 'Shared' }})
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        env:
-          SHARED: ${{ matrix.shared }}
-        run: make
-      - name: Generate artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: hashcat-macos-${{ matrix.shared == 0 && 'static' || 'shared' }}
-          path: ${{ env.include_paths }}
-
   build-windows:
     strategy:
       fail-fast: false
